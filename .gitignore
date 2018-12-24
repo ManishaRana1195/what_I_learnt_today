@@ -1,0 +1,17 @@
+JavaPrograms/DesignPatterns/out/
+JavaPrograms/DesignPatterns/.idea/
+JavaPrograms/DesignPatterns/*.iml
+
+**/*.class
+**/.mtj.tmp/
+**/*.jar
+/*.war
+/*.ear
+/hs_err_pid*
+
+**/*.iml
+**/.idea/
+**/*.ipr
+**/*.iws
+**/out/
+**/.idea_modules/
