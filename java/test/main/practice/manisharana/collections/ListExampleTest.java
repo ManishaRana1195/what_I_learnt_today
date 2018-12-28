@@ -1,7 +1,13 @@
 package main.practice.manisharana.collections;
 
 import org.junit.Test;
+
+import java.lang.reflect.Array;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.testng.Assert.*;
 
@@ -39,11 +45,45 @@ public class ListExampleTest {
 
     @Test
     public void test_creating_list_with_distinct_elements(){
-        ArrayList<Integer> sample = new ArrayList<>(Arrays.asList(1, 2, 4, 1, 3,2,20, 5, 20)) ;
-        ArrayList<Integer> distinctElements = new ArrayList<>(new HashSet<>(sample));
+        ArrayList<Integer> sample = getSampleList();
 
+        Instant start = Instant.now();
+        ArrayList<Integer> distinctElements = new ArrayList<>(new HashSet<>(sample));
+        Instant end = Instant.now();
+
+        System.out.println("The time taken in sec "+ Duration.between(start,end));
         assertNotEquals(sample.size(), distinctElements.size());
 
     }
 
+    private ArrayList<Integer> getSampleList() {
+        ArrayList<Integer> sample = IntStream.range(10, 100000).boxed().collect(Collectors.toCollection(ArrayList::new));
+        sample.addAll(sample);
+        return sample;
+    }
+
+    @Test
+    public void creating_list_with_distinct_elements(){
+        ArrayList<Integer> sample = getSampleList();
+
+        Instant start = Instant.now();
+        List<Integer> distinct = sample.stream().distinct().collect(Collectors.toList());
+        Instant end = Instant.now();
+
+        System.out.println("The time taken in sec "+ Duration.between(start,end));
+
+        assertNotEquals(sample.size(), distinct.size());
+    }
+
+    @Test
+    public void check_if_two_lists_are_equal(){
+        List<String> listA = Arrays.asList("5", "6", "7", "8");
+        List<String> listB = Arrays.asList("5", "6", "7", "8");
+        List<String> listC = Arrays.asList("5", "6", "8", "7");
+
+        assertEquals(listA,listB);
+        assertNotEquals(listA,listC);
+
+
+    }
 }
