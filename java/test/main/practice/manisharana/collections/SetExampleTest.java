@@ -4,10 +4,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 import static org.testng.Assert.*;
 
@@ -87,6 +84,52 @@ public class SetExampleTest {
     @Test(expectedExceptions = NullPointerException.class)
     public void when_adding_null_should_raise_null_pointer(){
         set.add(null);
+    }
+
+
+    class Borrower {
+        private Integer id;
+        private String name;
+
+        Borrower(Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        Integer getId() {
+            return id;
+        }
+
+        String getName() {
+            return name;
+        }
+    }
+
+    private Comparator<Borrower> idComparator = (o1, o2) -> o1.getId().compareTo(o2.id);
+    private Comparator<Borrower> nameComparator = Comparator.comparing(Borrower::getName);
+
+    @Test
+    public void should_sort_and_insert_on_comparator(){
+        TreeSet<Borrower> borrowerSet = new TreeSet<>(idComparator);
+        Borrower gray = new Borrower(200, "Gray");
+        Borrower martha = new Borrower(100, "Martha");
+
+        borrowerSet.add(gray);
+        borrowerSet.add(martha);
+
+        assertEquals(borrowerSet.first().id,martha.getId());
+    }
+
+    @Test
+    public void should_sort_and_insert_on_name(){
+        TreeSet<Borrower> borrowerSet = new TreeSet<>(nameComparator);
+        Borrower gray = new Borrower(200, "Gray");
+        Borrower martha = new Borrower(100, "Martha");
+
+        borrowerSet.add(martha);
+        borrowerSet.add(gray);
+
+        assertEquals(borrowerSet.first().getName(),gray.getName());
     }
 }
 
