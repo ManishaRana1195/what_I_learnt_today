@@ -68,7 +68,7 @@ public class ListExampleTest {
 
         Instant start = Instant.now();
         List<Integer> distinct = sample.stream().distinct().collect(Collectors.toList());
-        Instant end = Instant.now();
+        Instant end = Instant.now();  /*Doesn't really make sense to do this, because of compiler optimizations*/
 
         System.out.println("The time taken in sec "+ Duration.between(start,end));
 
@@ -83,7 +83,5 @@ public class ListExampleTest {
 
         assertEquals(listA,listB);
         assertNotEquals(listA,listC);
-
-
     }
 }
