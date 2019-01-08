@@ -1,8 +1,5 @@
 
-JavaPrograms/DesignPatterns/out/
-JavaPrograms/DesignPatterns/.idea/
-JavaPrograms/DesignPatterns/*.iml
-
+**/.mvn/wrapper/
 **/*.class
 **/.mtj.tmp/
 **/*.jar
