@@ -4,7 +4,7 @@ public class JsonObject {
     private Object object;
     private String unparsedString;
 
-    public JsonObject(Object object, String unparsedString) {
+    JsonObject(Object object, String unparsedString) {
         this.object = object;
         this.unparsedString = unparsedString;
     }
@@ -23,5 +23,10 @@ public class JsonObject {
 
     public void setUnparsedString(String unparsedString) {
         this.unparsedString = unparsedString;
+    }
+
+    @Override
+    public String toString() {
+        return object.toString();
     }
 }
