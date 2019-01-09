@@ -60,6 +60,20 @@ public class JsonParserTest {
 
     @Test
     public void should_parse_float_value(){
+        String input = "12345.45";
+        JsonObject jsonObject = new NumberParser().parse(input);
 
+        assertTrue(jsonObject.getObject() instanceof Float);
+    }
+
+    @Test
+    public void should_parse_colon(){
+        String parsed = ":";
+        String unparsed = "Monty Python";
+        String input = parsed + unparsed;
+
+        JsonObject jsonObject = new ColonParser().parse(input);
+        assertEquals(jsonObject.getObject(), parsed);
+        assertEquals(jsonObject.getUnparsedString(), unparsed);
     }
 }

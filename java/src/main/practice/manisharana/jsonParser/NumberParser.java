@@ -4,10 +4,11 @@ class NumberParser {
 
     JsonObject parse(String input){
 
-//        if("[0-9]*.[0-9]+".matches(input)){
-//            return new JsonObject(Float.valueOf(input),"");
-//        }
-        if("[0-9]+".matches(input)){
+        if(input.matches("\\d*.\\d+")){
+            return new JsonObject(Float.valueOf(input),"");
+        }
+
+        if(input.matches("^\\d+")){
             return new JsonObject(Integer.valueOf(input),"");
         }
 
