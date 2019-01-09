@@ -1,12 +1,12 @@
 package main.practice.manisharana.jsonParser;
 
-public class SpaceParser {
+class SpaceParser {
 
-    public JsonObject parse(String input){
+    JsonObject parse(String input){
         int i = 0;
         StringBuilder parsedString = new StringBuilder();
-        while (input.charAt(i) == ' '){
-            parsedString.append(" ");
+        while (input.charAt(i) == ' ' || input.charAt(i) == '\t' || input.charAt(i) == '\n'){
+            parsedString.append(input.charAt(i));
             i++;
         }
         if(parsedString.toString().isEmpty()){

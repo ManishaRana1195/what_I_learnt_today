@@ -1,8 +1,8 @@
 package main.practice.manisharana.jsonParser;
 
-public class CommaParser {
+class CommaParser {
 
-    public JsonObject parse(String input){
+    JsonObject parse(String input){
         if(input.startsWith(",")){
             return new JsonObject(input.substring(0,1),input.substring(1));
         }
