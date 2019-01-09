@@ -48,4 +48,18 @@ public class JsonParserTest {
 
         assertNull(jsonObject);
     }
+
+    @Test
+    public void should_parse_integer_value(){
+        String input = "12345";
+        JsonObject jsonObject = new NumberParser().parse(input);
+
+        assertTrue(jsonObject.getObject() instanceof Integer);
+    }
+
+
+    @Test
+    public void should_parse_float_value(){
+
+    }
 }
