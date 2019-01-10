@@ -21,7 +21,7 @@ public class ProductController {
     }
 
     @ResponseBody
-    @RequestMapping("/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     public Product getProduct(@PathVariable("id") Long productId){
         return productService.getProduct(productId);
     }
