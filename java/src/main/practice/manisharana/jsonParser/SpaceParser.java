@@ -1,8 +1,9 @@
 package main.practice.manisharana.jsonParser;
 
-class SpaceParser {
+class SpaceParser implements Parser {
 
-    JsonObject parse(String input){
+    @Override
+    public JsonObject parse(String input){
         int i = 0;
         StringBuilder parsedString = new StringBuilder();
         while (input.charAt(i) == ' ' || input.charAt(i) == '\t' || input.charAt(i) == '\n'){

@@ -1,7 +1,8 @@
 package main.practice.manisharana.jsonParser;
 
-public class BooleanParser {
+public class BooleanParser implements Parser {
 
+    @Override
     public JsonObject parse(String input) {
         String trueFlag = Boolean.TRUE.toString();
         String falseFlag = Boolean.FALSE.toString();

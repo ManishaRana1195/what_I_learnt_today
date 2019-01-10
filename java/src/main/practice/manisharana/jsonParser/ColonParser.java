@@ -1,8 +1,9 @@
 package main.practice.manisharana.jsonParser;
 
-class ColonParser {
+class ColonParser implements Parser {
 
-    JsonObject parse(String input){
+    @Override
+    public JsonObject parse(String input){
         if(input.startsWith(":")){
             return new JsonObject(input.substring(0,1),input.substring(1));
         }

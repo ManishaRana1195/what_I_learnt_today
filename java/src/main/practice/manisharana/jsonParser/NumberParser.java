@@ -1,8 +1,9 @@
 package main.practice.manisharana.jsonParser;
 
-class NumberParser {
+class NumberParser implements Parser {
 
-    JsonObject parse(String input){
+    @Override
+    public JsonObject parse(String input){
 
         if(input.matches("\\d*.\\d+")){
             return new JsonObject(Float.valueOf(input),"");
