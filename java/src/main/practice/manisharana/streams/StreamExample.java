@@ -21,7 +21,7 @@ public class StreamExample {
         Stream<String> listStream = list.stream();
         Stream<String> arrayStream = Arrays.stream(array);
 
-        streamGenrationMethods();
+        streamGenerationMethods();
         primitiveTypeStream();
     }
 
@@ -44,7 +44,7 @@ public class StreamExample {
 
     }
 
-    private static void streamGenrationMethods() {
+    private static void streamGenerationMethods() {
         int n = 5;
         /*Must limit the size*/
         Stream<Integer> generatedStream = Stream.generate(() -> n * 2).limit(10);
