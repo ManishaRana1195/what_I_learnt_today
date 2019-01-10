@@ -76,4 +76,13 @@ public class JsonParserTest {
         assertEquals(jsonObject.getObject(), parsed);
         assertEquals(jsonObject.getUnparsedString(), unparsed);
     }
+
+    @Test
+    public void should_parse_json_object(){
+        /*should make it pass with quotes*/
+        String input = "{  key: value }";
+        JsonObject jsonObject = new ObjectParser().parse(input);
+
+        assertTrue(jsonObject.getObject().equals(input));
+    }
 }

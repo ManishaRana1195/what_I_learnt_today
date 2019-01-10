@@ -7,17 +7,21 @@ public class ObjectParser implements Parser {
     @Override
     public JsonObject parse(String input){
         int i = 0;
+        /*To see if number of brackets are balanced*/
         Stack<Character> bracketStack = new Stack<>();
         JsonObject jsonObject = new JsonObject("",input);
-        while(i < input.length()){
+        StringBuilder result = new StringBuilder();
+
+        while(input.length() > 0){
+
             String character = String.valueOf(input.charAt(i));
             if(character.equals("{")){
                 bracketStack.push(input.charAt(i));
+                result.append(character);
                 input = input.substring(i+1);
-                character = String.valueOf(input.charAt(i));
             }
 
-            switch (character) {
+            switch (String.valueOf(input.charAt(i))) {
                 case " ":
                     jsonObject = new SpaceParser().parse(input);
                     break;
@@ -34,18 +38,24 @@ public class ObjectParser implements Parser {
                     // could be array parser
                     break;
             }
-            if(character.equals("}")){
-               bracketStack.pop();
-             //  input = input.substring(i+1);
-            }
-            i++;
+            /*updating the input string*/
             input = jsonObject.getUnparsedString();
+
+            /*append the parsed string together*/
+            result.append(jsonObject.getObject());
+
+            String nextChar = String.valueOf(input.charAt(i));
+            if(nextChar.equals("}")){
+                bracketStack.pop();
+                result.append(nextChar);
+                input = input.substring(i+1);
+            }
         }
 
         if(!bracketStack.empty()){
             // raise exception parsing error
         }
-
+        jsonObject.setObject(result.toString());
         return jsonObject;
     }
 }
