@@ -1,5 +1,6 @@
 package main.practice.manisharana.jsonParser;
 
+/*Needs to be renamed to ResultObject*/
 public class JsonObject {
     private Object object;
     private String unparsedString;

@@ -103,4 +103,15 @@ public class JsonParserTest {
 
         assertEquals(jsonObject.getObject(), input);
     }
+
+    @Test
+    public void should_parse_null(){
+        String parsed = "null";
+        String unparsed = "Monty ";
+        String input = parsed + unparsed;
+
+        JsonObject jsonObject = new NullParser().parse(input);
+        assertEquals(jsonObject.getObject(), parsed);
+        assertEquals(jsonObject.getUnparsedString(), unparsed);
+    }
 }
