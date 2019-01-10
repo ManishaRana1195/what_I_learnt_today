@@ -97,7 +97,6 @@ public class JsonParserTest {
 
     @Test
     public void should_parse_json_object_with_boolean(){
-        /*should make it pass with quotes*/
         String input = "{  key: false, key: 123456}";
         JsonObject jsonObject = new ObjectParser().parse(input);
 
@@ -113,5 +112,13 @@ public class JsonParserTest {
         JsonObject jsonObject = new NullParser().parse(input);
         assertEquals(jsonObject.getObject(), parsed);
         assertEquals(jsonObject.getUnparsedString(), unparsed);
+    }
+
+    @Test
+    public void should_parse_json_empty_array(){
+        String input = "[]";
+        JsonObject jsonObject = new ArrayParser().parse(input);
+
+        assertEquals(jsonObject.getObject(), input);
     }
 }

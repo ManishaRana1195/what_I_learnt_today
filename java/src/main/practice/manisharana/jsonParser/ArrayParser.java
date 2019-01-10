@@ -5,7 +5,7 @@ import java.util.Stack;
 public class ArrayParser implements Parser {
     @Override
     public JsonObject parse(String input) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         JsonObject jsonObject = new JsonObject("", input);
         Stack<Character> bracketStack = new Stack<>();
 
@@ -14,10 +14,15 @@ public class ArrayParser implements Parser {
 
             if(firstChar == '[') {
                 bracketStack.push(firstChar);
+                result.append(firstChar);
+                input = input.substring(1);
             }
 
-            if(firstChar == ']') {
+            char nextChar = input.charAt(0);
+            if(nextChar == ']') {
                 bracketStack.pop();
+                result.append(nextChar);
+                input = input.substring(1);
             }
         }
 
@@ -25,7 +30,7 @@ public class ArrayParser implements Parser {
             // error imbalanced brackets
         }
 
-        jsonObject.setObject(result);
+        jsonObject.setObject(result.toString());
         return jsonObject;
     }
 }
