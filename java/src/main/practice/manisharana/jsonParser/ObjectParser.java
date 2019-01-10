@@ -1,19 +1,20 @@
 package main.practice.manisharana.jsonParser;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
-public class ObjectParser {
+public class ObjectParser implements Parser {
 
+    @Override
     public JsonObject parse(String input){
         int i = 0;
         Stack<Character> bracketStack = new Stack<>();
-        JsonObject jsonObject = new JsonObject(null,input);
-        while(i< input.length()){
+        JsonObject jsonObject = new JsonObject("",input);
+        while(i < input.length()){
             String character = String.valueOf(input.charAt(i));
             if(character.equals("{")){
                 bracketStack.push(input.charAt(i));
-                input = input.substring(1);
+                input = input.substring(i+1);
+                character = String.valueOf(input.charAt(i));
             }
 
             switch (character) {
@@ -33,11 +34,12 @@ public class ObjectParser {
                     // could be array parser
                     break;
             }
-
             if(character.equals("}")){
                bracketStack.pop();
+             //  input = input.substring(i+1);
             }
             i++;
+            input = jsonObject.getUnparsedString();
         }
 
         if(!bracketStack.empty()){
