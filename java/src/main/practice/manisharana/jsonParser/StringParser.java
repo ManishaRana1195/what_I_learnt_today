@@ -9,7 +9,6 @@ public class StringParser implements Parser {
     public JsonObject parse(String input){
      //   Pattern stringPattern = Pattern.compile("^(\"?)(\\w+)(\\d*)(\"?)$"); /*Need to add special characters as well as "" */
         Pattern stringPattern = Pattern.compile("^(\\w+)(\\d*)"); /*Need to add special characters as well as "" */
-      //  Matcher matcher = stringPattern.matcher(input);
         Matcher matcher = stringPattern.matcher(input);
 
         if(matcher.find()){

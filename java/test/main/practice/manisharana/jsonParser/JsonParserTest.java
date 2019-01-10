@@ -83,6 +83,24 @@ public class JsonParserTest {
         String input = "{  key: value }";
         JsonObject jsonObject = new ObjectParser().parse(input);
 
-        assertTrue(jsonObject.getObject().equals(input));
+        assertEquals(jsonObject.getObject(), input);
+    }
+
+    @Test
+    public void should_parse_json_object_with_integer(){
+        /*should make it pass with quotes*/
+        String input = "{  key: 1234 }";
+        JsonObject jsonObject = new ObjectParser().parse(input);
+
+        assertEquals(jsonObject.getObject(), input);
+    }
+
+    @Test
+    public void should_parse_json_object_with_boolean(){
+        /*should make it pass with quotes*/
+        String input = "{  key: false, key: 123456}";
+        JsonObject jsonObject = new ObjectParser().parse(input);
+
+        assertEquals(jsonObject.getObject(), input);
     }
 }
