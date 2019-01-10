@@ -56,13 +56,14 @@ public class ObjectParser implements Parser {
 
     private ArrayList<Parser> getParserList() {
         ArrayList<Parser> parsers = new ArrayList<>();
-        parsers.add(new SpaceParser());
+        /*Add array parser later*/
+        parsers.add(new BooleanParser());
         parsers.add(new ColonParser());
         parsers.add(new CommaParser());
-        parsers.add(new StringParser());
-        parsers.add(new SpaceParser());
+        parsers.add(new NullParser());
         parsers.add(new NumberParser());
-        parsers.add(new BooleanParser());
+        parsers.add(new SpaceParser());
+        parsers.add(new StringParser());
         return parsers;
     }
 }

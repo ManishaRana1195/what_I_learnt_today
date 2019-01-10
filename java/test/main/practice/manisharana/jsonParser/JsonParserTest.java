@@ -116,7 +116,7 @@ public class JsonParserTest {
 
     @Test
     public void should_parse_json_empty_array(){
-        String input = "[]";
+        String input = "[ null, null, null ]";
         JsonObject jsonObject = new ArrayParser().parse(input);
 
         assertEquals(jsonObject.getObject(), input);

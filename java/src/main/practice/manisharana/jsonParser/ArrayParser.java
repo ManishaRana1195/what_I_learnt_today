@@ -1,36 +1,66 @@
 package main.practice.manisharana.jsonParser;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class ArrayParser implements Parser {
     @Override
     public JsonObject parse(String input) {
-        StringBuilder result = new StringBuilder();
-        JsonObject jsonObject = new JsonObject("", input);
         Stack<Character> bracketStack = new Stack<>();
+        JsonObject resultJsonObject = new JsonObject("", input);
 
-        while(input.length() > 0){
-            char firstChar = input.charAt(0);
+        StringBuilder result = parseAndGetJsonObject(input, bracketStack);
 
-            if(firstChar == '[') {
-                bracketStack.push(firstChar);
-                result.append(firstChar);
-                input = input.substring(1);
+        if (!bracketStack.empty()) {
+            // raise exception parsing error
+        }
+        resultJsonObject.setObject(result.toString());
+        return resultJsonObject;
+    }
+
+
+    private StringBuilder parseAndGetJsonObject(String input, Stack<Character> bracketStack) {
+        int i = 0;
+        StringBuilder result = new StringBuilder();
+        JsonObject tempJsonObject;
+        ArrayList<Parser> parserList = getParserList();
+
+
+        while (input.length() > 0) {
+            String character = String.valueOf(input.charAt(i));
+            if (character.equals("[")) {
+                bracketStack.push(input.charAt(i));
+                result.append(character);  // tempJsonObject.setObject(character);
+                input = input.substring(i + 1);
             }
 
-            char nextChar = input.charAt(0);
-            if(nextChar == ']') {
+            for (Parser parser : parserList) {
+                tempJsonObject = parser.parse(input);
+                if(tempJsonObject != null){
+                    input = tempJsonObject.getUnparsedString();
+                    result.append(tempJsonObject.getObject());
+                }
+            }
+
+            String nextChar = String.valueOf(input.charAt(i));
+            if (nextChar.equals("]")) {
                 bracketStack.pop();
                 result.append(nextChar);
-                input = input.substring(1);
+                input = input.substring(i + 1);
             }
         }
 
-        if(!bracketStack.empty()){
-            // error imbalanced brackets
-        }
+        return result;
+    }
 
-        jsonObject.setObject(result.toString());
-        return jsonObject;
+    private ArrayList<Parser> getParserList() {
+        ArrayList<Parser> parsers = new ArrayList<>();
+        parsers.add(new BooleanParser());
+        parsers.add(new CommaParser());
+        parsers.add(new NullParser());
+        parsers.add(new NumberParser());
+        parsers.add(new SpaceParser());
+        parsers.add(new StringParser());
+        return parsers;
     }
 }
