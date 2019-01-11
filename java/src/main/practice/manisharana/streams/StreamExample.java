@@ -2,9 +2,8 @@ package main.practice.manisharana.streams;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
+import java.util.OptionalInt;
+import java.util.function.*;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
@@ -23,24 +22,31 @@ public class StreamExample {
 
         streamGenerationMethods();
         primitiveTypeStream();
+        reduceVariations();
+    }
+
+    private static void reduceVariations() {
+        OptionalInt identity = IntStream.range(5, 10).reduce((left, right) -> left + right);
+        int accumulator = IntStream.range(5, 10).reduce(1, ((left, right) -> left + right));
+        Integer combiner = Arrays.asList(5, 6, 7, 8, 9).parallelStream().reduce(10, (a, b) -> a + b, (a, b) -> a + b);
     }
 
     private static void primitiveTypeStream() {
         /*Stream of primitive types*/
-        IntStream intStream= IntStream.range(5, 10);
-        intStream.forEach(integer -> System.out.print(integer+"\t"));
+        IntStream intStream = IntStream.range(5, 10);
+        intStream.forEach(integer -> System.out.print(integer + "\t"));
         System.out.println();
 
         LongStream longStream = LongStream.rangeClosed(5, 10); /*Inclusive of las element*/
-        longStream.forEach(longValue -> System.out.print(longValue+"\t"));
+        longStream.forEach(longValue -> System.out.print(longValue + "\t"));
         System.out.println();
 
         IntStream chars = "abcdefgr".chars();
-        chars.forEach(ch -> System.out.print((char) ch+"\t"));
+        chars.forEach(ch -> System.out.print((char) ch + "\t"));
         System.out.println();
 
         Stream<String> stringStream = Pattern.compile(",").splitAsStream("a, b, c");
-        stringStream.forEach(ch -> System.out.print(ch+"\t"));
+        stringStream.forEach(ch -> System.out.print(ch + "\t"));
 
     }
 
@@ -48,11 +54,11 @@ public class StreamExample {
         int n = 5;
         /*Must limit the size*/
         Stream<Integer> generatedStream = Stream.generate(() -> n * 2).limit(10);
-        generatedStream.forEach(integer -> System.out.print(integer+"\t"));
+        generatedStream.forEach(integer -> System.out.print(integer + "\t"));
         System.out.println();
 
         Stream<Integer> iteratedStream = Stream.iterate(2, m -> m * 5).limit(10);
-        iteratedStream.forEach(integer -> System.out.print(integer+"\t"));
+        iteratedStream.forEach(integer -> System.out.print(integer + "\t"));
         System.out.println();
     }
 }
