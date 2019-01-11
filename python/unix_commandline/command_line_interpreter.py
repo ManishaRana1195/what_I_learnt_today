@@ -1,6 +1,18 @@
+import os
+
 
 def change_directory_command(input_command):
-    print("changing directory")
+    print("current path: {} ".format(os.getcwd()))
+
+    cd_index = input_command.find(cd)
+    path = input_command[cd_index+len(cd):]
+    #print(path)
+    try:
+        os.chdir(path.strip())
+    except OSError:
+        print("cd: No such directory")
+
+    print("current path: {} ".format(os.getcwd()))
 
 
 def exit_command(input_command):
@@ -11,7 +23,10 @@ def processes_command(input_command):
     print("processes")
 
 
-built_in_commands = {"cd": change_directory_command, "exit": exit_command, "processes": processes_command }
+cd = "cd"
+exiting = "exit"
+processes = "processes"
+built_in_commands = {cd: change_directory_command, exiting: exit_command, processes: processes_command}
 
 
 def handle_built_in_commands(input_command):
