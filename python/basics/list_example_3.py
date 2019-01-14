@@ -44,13 +44,18 @@ for i in range(0, N):
     command = input()
     if command.startswith("insert"):
         parts = command.split(" ")
-        array.append(int(parts[2]), parts[1])
+        array.insert(int(parts[1]), int(parts[2]))
     elif command.startswith("print"):
         print(array)
     elif command.startswith("remove"):
-
+        val = int(command.split(" ")[1])
+        if val in array:
+            array.pop(array.index(val))
     elif command.startswith("append"):
         array.append(int(command.split(" ")[1]))
     elif command.startswith("sort"):
+        sorted(array)
     elif command.startswith("pop"):
+        array.pop()
     elif command.startswith("reverse"):
+        array.reverse()
