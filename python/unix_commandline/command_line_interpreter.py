@@ -48,9 +48,16 @@ def is_built_in(input_command):
     return False
 
 
-def get_path_to_command(input_command):
-    command_paths = environ['PATH']
-    print(command_paths)
+def get_path_to_command(args):
+    path_concatenated = environ['PATH']
+    path_list = map(lambda x: "{}/{}".format(x, args[0]), path_concatenated.split(":"))
+
+    for path in path_list:
+        print(path)
+        if os.access(path, os.X_OK):
+            return path
+        else:
+            print("couldn't find the command")
 
 
 def main():
@@ -60,12 +67,12 @@ def main():
     if user_input.startswith(bg):
         is_background_process = True;
 
+    args = user_input.split(" ")
     if is_built_in(user_input):
         handle_built_in_commands(user_input, running_processes)
     else:
-        get_path_to_command(user_input)
-
-
+        valid_command_path = get_path_to_command(args)
+        print(valid_command_path)
 
 
 if __name__ == "__main__":
