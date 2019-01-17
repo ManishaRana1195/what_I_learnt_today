@@ -52,12 +52,11 @@ def get_path_to_command(args):
     path_concatenated = environ['PATH']
     path_list = map(lambda x: "{}/{}".format(x, args[0]), path_concatenated.split(":"))
 
-    for path in path_list:
-        print(path)
-        if os.access(path, os.X_OK):
-            return path
-        else:
-            print("couldn't find the command")
+    valid_command_path = list(filter(lambda path: os.access(path, os.X_OK), path_list))
+    if len(valid_command_path) == 0:
+        print("couldn't find the command")
+    else:
+        return valid_command_path
 
 
 def main():
@@ -73,6 +72,10 @@ def main():
     else:
         valid_command_path = get_path_to_command(args)
         print(valid_command_path)
+        if os.fork() == 0:
+            print("in child")
+        else:
+            print("in parent")
 
 
 if __name__ == "__main__":
