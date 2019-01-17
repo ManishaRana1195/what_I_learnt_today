@@ -62,20 +62,30 @@ def get_path_to_command(args):
 def main():
     user_input = input("Enter command>>>").strip()
     running_processes = []
-    is_background_process = False
-    if user_input.startswith(bg):
-        is_background_process = True;
 
     args = user_input.split(" ")
     if is_built_in(user_input):
         handle_built_in_commands(user_input, running_processes)
     else:
+        is_background_process = False
+        if user_input.startswith(bg):
+            is_background_process = True
+            args.pop(0)
+
+
         valid_command_path = get_path_to_command(args)
-        print(valid_command_path)
-        if os.fork() == 0:
-            print("in child")
+        pid = os.fork()
+        if pid == 0:
+            if (os.execv(valid_command_path[0], args)) == -1:
+                print("Error in executing command")
+                os._exit(1)
+        elif pid < 0:
+            print("error in fork")
         else:
-            print("in parent")
+            print(pid)
+            if is_background_process:
+                running_processes.append(pid)
+                print("Background Process with pid {}".format(pid))
 
 
 if __name__ == "__main__":
