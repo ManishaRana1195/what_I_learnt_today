@@ -1,5 +1,6 @@
 import os
 from os import environ
+import signal
 
 
 def change_directory_command(input_command):
@@ -16,7 +17,11 @@ def change_directory_command(input_command):
 
 
 def exit_command(running_processes):
-    print("exit !!")
+    for process_id in running_processes:
+        status = os.waitpid(process_id, os.WNOHANG)
+        if status != -1:
+            os.kill(process_id, signal.SIGTERM)
+            print("killing process with pid {}".format(process_id))
 
 
 def processes_command(running_processes):
@@ -72,7 +77,6 @@ def main():
             is_background_process = True
             args.pop(0)
 
-
         valid_command_path = get_path_to_command(args)
         pid = os.fork()
         if pid == 0:
@@ -86,6 +90,9 @@ def main():
             if is_background_process:
                 running_processes.append(pid)
                 print("Background Process with pid {}".format(pid))
+            else:
+                status = os.waitpid(pid, 0)
+                print("Waiting for child process with pid {} and status {}".format(pid, status))
 
 
 if __name__ == "__main__":
