@@ -27,7 +27,6 @@ def exit_command(running_processes):
 def processes_command(running_processes):
     for process in running_processes:
         print("background process with pid {} running".format(process))
-    print("processes")
 
 
 cd = "cd"
@@ -68,31 +67,38 @@ def main():
     user_input = input("Enter command>>>").strip()
     running_processes = []
 
-    args = user_input.split(" ")
     if is_built_in(user_input):
         handle_built_in_commands(user_input, running_processes)
     else:
-        is_background_process = False
-        if user_input.startswith(bg):
-            is_background_process = True
-            args.pop(0)
+        execv_commands(running_processes, user_input)
 
-        valid_command_path = get_path_to_command(args)
-        pid = os.fork()
-        if pid == 0:
-            if (os.execv(valid_command_path[0], args)) == -1:
-                print("Error in executing command")
-                os._exit(1)
-        elif pid < 0:
-            print("error in fork")
+
+def execv_commands(running_processes, user_input):
+    args = user_input.split(" ")
+
+    is_background_process = False
+    if user_input.startswith(bg):
+        is_background_process = True
+        args.pop(0)
+
+    while():
+
+    valid_command_path = get_path_to_command(args)
+    pid = os.fork()
+    if pid == 0:
+        if (os.execv(valid_command_path[0], args)) == -1:
+            print("Error in executing command")
+            os._exit(1)
+    elif pid < 0:
+        print("error in fork")
+    else:
+        print(pid)
+        if is_background_process:
+            running_processes.append(pid)
+            print("Background Process with pid {}".format(pid))
         else:
-            print(pid)
-            if is_background_process:
-                running_processes.append(pid)
-                print("Background Process with pid {}".format(pid))
-            else:
-                status = os.waitpid(pid, 0)
-                print("Waiting for child process with pid {} and status {}".format(pid, status))
+            status = os.waitpid(pid, 0)
+            print("Waiting for child process with pid {} and status {}".format(pid, status))
 
 
 if __name__ == "__main__":
