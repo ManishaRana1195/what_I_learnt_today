@@ -23,27 +23,31 @@ class Account(object):
     # self cannot be omitted like "this" in java
     # init method is to customize the object with values
     def __init__(self, name, balance):
-        self.name = name
-        self.transaction_list = []
-        self.balance = balance
+        """
+            data attributes are underscore to suggest that they are intended to be private
+        """
+        self._name = name
+        self._balance = balance
+        self._transaction_list = [(Account._current_time(), balance, "initial")]
+        print("Account created for {}". format(name))
 
     def deposit(self, amount):
         if amount > 0:
-            self.balance += amount
-            self.transaction_list.append((Account._current_time(), amount, self.deposit_action))
+            self._balance += amount
+            self._transaction_list.append((Account._current_time(), amount, self.deposit_action))
 
     def withdraw(self, amount):
-        if amount > 0 and (self.balance - amount) >= 0:
-            self.balance -= amount
-            self.transaction_list.append(
+        if amount > 0 and (self._balance - amount) >= 0:
+            self._balance -= amount
+            self._transaction_list.append(
                 (pytz.utc.localize(datetime.datetime.now()), amount * -1, self.withdraw_action))
 
     def show_balance(self):
-        print(" Account balance: {} ".format(self.balance))
+        print(" Account balance: {} ".format(self._balance))
 
     def show_transactions(self):
-        for date, amount, action in self.transaction_list:
-            print(" {} {} on {} (local time was {} )".format(amount, action, date, date.astimezone()))
+        for date, amount, action in self._transaction_list:
+            print(" {:5} {} on {} (local time was {} )".format(amount, action, date, date.astimezone()))
 
 
 if __name__ == "__main__":
