@@ -1,5 +1,4 @@
 class Kettle(object):
-
     power_source = "electricity"
 
     def __init__(self, make, price):
@@ -24,6 +23,7 @@ print(hamilton)
 print("Models: {0.make}= {0.price}, {1.make}= {1.price}".format(hamilton, kenwood))
 
 # Amazing
+# we can pass object to method, instead of calling method on object
 Kettle.switch_on(hamilton)
 print(hamilton.on)
 
@@ -31,15 +31,19 @@ print(hamilton.on)
 
 print(Kettle.power_source)
 
-# power_source shadowing the class attribute
-kenwood.power_source = "gas"
+Kettle.power_source = "atomic"
 print(kenwood.power_source)
 print(hamilton.power_source)
 
+# power_source shadowing the class attribute
+print("depicts an instance can have different value for class variable ")
+kenwood.power_source = "gas"
+print(Kettle.power_source)
+print(kenwood.power_source)
+print(hamilton.power_source)
 
-# Adding instance data attributes to instance as we like
+""" Adding instance data attributes to instance as we like, 
+  we must assign the new data attribute """
 kenwood.power = 2.5
-print(kenwood.power)
-print(hamilton.power)   # error no attribute on Kettle
-
-
+print("kenwood power: {} ".format(kenwood.power))
+# print(hamilton.power)   # error no attribute on Kettle
