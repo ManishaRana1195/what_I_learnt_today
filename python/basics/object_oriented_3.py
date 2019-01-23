@@ -55,3 +55,32 @@ class Album(object):
             self.tracks.append(song)
         else:
             self.tracks.insert(position, song)
+
+
+class Artist(object):
+    """
+        Class to represent artist details
+
+        Attributes:
+            name (str): artist name
+            albums (List[albums]): list of albums published by this artist
+    """
+
+    def __init__(self, name):
+        self.name = name
+        self.albums = []
+
+    def add_album(self, album):
+        self.albums.append(album)
+
+
+# These set of classes have cyclic dependency, we should avoid such schema
+
+def load_artist_data():
+    new_artist = None
+    new_album = None
+    artist_list = []
+
+    with open("../albums.txt", "r") as albums:
+        for line in albums:
+            artist_val, album_val, year_val, song_val = tuple(line.strip("\n").split("\t"))
