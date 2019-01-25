@@ -36,3 +36,6 @@
 *.tar.gz
 *.rar
 
+**/python/ML_Bootcamp/Pierian_Data_Logo.png
+**/python/ML_Bootcamp/README.md
+**/python/albums.txt
