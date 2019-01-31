@@ -22,6 +22,7 @@ def exit_command(running_processes):
         if status != -1:
             os.kill(process_id, signal.SIGTERM)
             print("killing process with pid {}".format(process_id))
+        print("exiting")
 
 
 def processes_command(running_processes):
@@ -58,19 +59,9 @@ def get_path_to_command(args):
 
     valid_command_path = list(filter(lambda path: os.access(path, os.X_OK), path_list))
     if len(valid_command_path) == 0:
-        print("couldn't find the command")
+        return None
     else:
         return valid_command_path
-
-
-def main():
-    user_input = input("Enter command>>>").strip()
-    running_processes = []
-
-    if is_built_in(user_input):
-        handle_built_in_commands(user_input, running_processes)
-    else:
-        execv_commands(running_processes, user_input)
 
 
 def execv_commands(running_processes, user_input):
@@ -81,24 +72,35 @@ def execv_commands(running_processes, user_input):
         is_background_process = True
         args.pop(0)
 
-    while():
-
     valid_command_path = get_path_to_command(args)
+    if valid_command_path is None:
+        print("Not valid command")
+        return
+
     pid = os.fork()
     if pid == 0:
         if (os.execv(valid_command_path[0], args)) == -1:
             print("Error in executing command")
             os._exit(1)
     elif pid < 0:
-        print("error in fork")
+        print("Error in fork")
     else:
-        print(pid)
         if is_background_process:
             running_processes.append(pid)
             print("Background Process with pid {}".format(pid))
         else:
-            status = os.waitpid(pid, 0)
-            print("Waiting for child process with pid {} and status {}".format(pid, status))
+            os.waitpid(pid, 0)
+            print("Waiting for child process with pid {}".format(pid))
+
+
+def main():
+    user_input = input("MyShell@enter command:~$").strip()
+    running_processes = []
+
+    if is_built_in(user_input):
+        handle_built_in_commands(user_input, running_processes)
+    else:
+        execv_commands(running_processes, user_input)
 
 
 if __name__ == "__main__":
