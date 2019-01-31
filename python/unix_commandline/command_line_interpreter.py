@@ -67,6 +67,8 @@ def get_path_to_command(args):
 def execv_commands(running_processes, user_input):
     args = user_input.split(" ")
 
+    is_input_redirect, is_output_redirect, filename = has_redirection(args)
+
     is_background_process = False
     if user_input.startswith(bg):
         is_background_process = True
@@ -91,6 +93,25 @@ def execv_commands(running_processes, user_input):
         else:
             os.waitpid(pid, 0)
             print("Waiting for child process with pid {}".format(pid))
+
+
+def has_redirection(args):
+    is_input_redirect, is_output_redirect = False
+    filename = ""
+
+    if "<" in args:
+        is_input_redirect = True
+        index = args.index("<")
+        filename = args[index + 1]
+        args.remove("<")
+
+    elif ">" in args:
+        is_output_redirect = False
+        index = args.index(">")
+        filename = args[index + 1]
+        args.remove(">")
+
+    return is_input_redirect, is_output_redirect, filename
 
 
 def main():
