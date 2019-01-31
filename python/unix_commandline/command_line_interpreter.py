@@ -65,7 +65,6 @@ def get_path_to_command(args):
 
 
 def execv_commands(running_processes, user_input):
-    isInputRedirect, isOutputRediect = False
     args = user_input.split(" ")
 
     is_input_redirect, is_output_redirect, filename = has_redirection(args)
@@ -82,9 +81,31 @@ def execv_commands(running_processes, user_input):
 
     pid = os.fork()
     if pid == 0:
+        input_file_des = output_file_des = 0
+
+        if is_input_redirect:
+            input_file_des = os.open(filename, os.O_RDONLY)
+            if input_file_des == -1:
+                print("Error in opening file")
+            else:
+                os.close(0)
+                os.dup(input_file_des)
+
+        if is_output_redirect:
+            output_file_des = os.open(filename, os.O_CREAT | os.O_APPEND, mode=644)
+            if output_file_des == -1:
+                print("Error in writing to file")
+            else:
+                os.close(1)
+                os.dup(output_file_des)
+
         if (os.execv(valid_command_path[0], args)) == -1:
             print("Error in executing command")
             os._exit(1)
+
+        os.close(input_file_des)
+        os.close(output_file_des)
+
     elif pid < 0:
         print("Error in fork")
     else:
