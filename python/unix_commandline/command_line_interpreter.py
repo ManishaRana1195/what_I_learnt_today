@@ -65,6 +65,7 @@ def get_path_to_command(args):
 
 
 def execv_commands(running_processes, user_input):
+    isInputRedirect, isOutputRediect = False
     args = user_input.split(" ")
 
     is_input_redirect, is_output_redirect, filename = has_redirection(args)
