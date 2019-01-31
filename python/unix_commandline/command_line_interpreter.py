@@ -65,7 +65,12 @@ def get_path_to_command(args):
 
 
 def execv_commands(running_processes, user_input):
+    isInputRedirect, isOutputRediect = False
     args = user_input.split(" ")
+
+    if "<" in args:
+        
+    elif ">" in args:
 
     is_background_process = False
     if user_input.startswith(bg):
