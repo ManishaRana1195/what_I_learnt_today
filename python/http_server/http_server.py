@@ -24,11 +24,14 @@ class Connection(object):
             line = self.read_line()
             if not line:
                 break
-            print(line)
             header, value = line.split(':', maxsplit=1)
             headers[header] = value
 
         print(headers)
+
+
+def respond(client_conn, status_code, content):
+    print(client_conn, status_code, content)
 
 
 def main():
@@ -42,6 +45,7 @@ def main():
     client_sock, address_info = sock.accept()
     client_conn = Connection(client_sock)
     client_conn.read_request()
+    respond(client_conn, 200, "dummy content")
 
 
 if __name__ == "__main__":
