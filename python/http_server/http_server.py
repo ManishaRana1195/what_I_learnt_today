@@ -9,13 +9,26 @@ class Connection(object):
 
     def read_line(self):
         separator = "\r\n"
-        print(self.buffer)
         while separator not in self.buffer:
             # to utf-8 decoding to remove b''
-            self.buffer += str(self.conn_sock.recv(100), 'utf-8')
+            self.buffer += str(self.conn_sock.recv(7), 'utf-8')
 
-        return self.buffer
-        #print(self.buffer.split(separator, 2))
+        result, self.buffer = self.buffer.split(separator, 2)
+        return result
+
+    def read_request(self):
+        request_line = self.read_line()
+        method, path, version = request_line.split("/", 3)
+        headers = {}
+        while True:
+            line = self.read_line()
+            if not line:
+                break
+            print(line)
+            header, value = line.split(':', maxsplit=1)
+            headers[header] = value
+
+        print(headers)
 
 
 def main():
@@ -28,10 +41,7 @@ def main():
     # accept blocks and waits for client request
     client_sock, address_info = sock.accept()
     client_conn = Connection(client_sock)
-    client_conn.read_line()
-    client_conn.read_line()
-    client_conn.read_line()
-    client_conn.read_line()
+    client_conn.read_request()
 
 
 if __name__ == "__main__":
