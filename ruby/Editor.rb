@@ -13,9 +13,15 @@ class Editor
   def execute
     IO.console.raw do
       loop do
+        render_screen
         handle_input
       end
     end
+  end
+
+  def render_screen
+    CSI.clear_screen
+    CSI.move_cursor(0,0)
   end
 
   def handle_input
@@ -28,5 +34,14 @@ class Editor
 
 end
 
+class CSI
+  def self.clear_screen
+    $stdout.write("\e[2J")
+  end
+
+  def self.move_cursor(row, column)
+    $stdout.write("\e[#{row + 1};#{column + 1}H")
+  end
+end
 
 Editor.new.execute
