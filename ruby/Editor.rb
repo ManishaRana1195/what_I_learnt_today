@@ -8,6 +8,8 @@ class Editor
     lines = File.readlines("sample.txt").map do |line|
       line.sub(/\n$/, "")
     end
+    @buffer = Buffer.new(lines)
+    @cursor = Cursor.new
   end
 
   def execute
@@ -21,7 +23,9 @@ class Editor
 
   def render_screen
     CSI.clear_screen
-    CSI.move_cursor(0,0)
+    CSI.move_cursor(0, 0)
+    @buffer.render
+    CSI.move_cursor(@cursor.row, @cursor.column)
   end
 
   def handle_input
@@ -44,4 +48,24 @@ class CSI
   end
 end
 
+class Buffer
+  def initialize(lines)
+    @lines = lines
+  end
+
+  def render
+    @lines.each do |line|
+      $stdout.write(line + "\r\n")
+    end
+  end
+end
+
+class Cursor
+  attr_accessor :row, :column
+
+  def initialize(row=0, column=0)
+    @row = row
+    @column = column
+  end
+end
 Editor.new.execute
