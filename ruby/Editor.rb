@@ -31,8 +31,11 @@ class Editor
   def handle_input
     input = $stdin.getc
     case input
-    when "\C-q" then
-      exit(0)
+    when "\C-q" then exit(0)
+    when "\C-n" then @cursor = @cursor.down
+    when "\C-p" then @cursor = @cursor.up
+    when "\C-b" then @cursor = @cursor.left
+    when "\C-f" then @cursor = @cursor.right
     end
   end
 
@@ -63,9 +66,25 @@ end
 class Cursor
   attr_accessor :row, :column
 
-  def initialize(row=0, column=0)
+  def initialize(row = 0, column = 0)
     @row = row
     @column = column
+  end
+
+  def down()
+    Cursor.new(@row + 1, @column)
+  end
+
+  def up()
+    Cursor.new(@row - 1, @column)
+  end
+
+  def left
+    Cursor.new(@row , @column - 1)
+  end
+
+  def right
+    Cursor.new(@row , @column + 1)
   end
 end
 Editor.new.execute
