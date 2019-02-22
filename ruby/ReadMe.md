@@ -18,4 +18,8 @@ foo
 
 "\r" escape sequence ensures that the cursor resets to the beginning of the line. So the output for "foo\r\nbar" would be
 foo
-bar 
+bar
+
+
+This might not be the actual way of implementing text editor, but it is just interesting to learn this anyway. I have learned the implementation from
+[DAS website](https://www.destroyallsoftware.com/screencasts/catalog/text-editor-from-scratch) and would like to thank Gary Bernhardt for his work. 

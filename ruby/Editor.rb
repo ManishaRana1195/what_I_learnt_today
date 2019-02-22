@@ -19,6 +19,10 @@ class Editor
         handle_input
       end
     end
+  rescue
+      # give some space and then print the error
+      50.times {puts}
+      raise
   end
 
   def render_screen
@@ -32,10 +36,10 @@ class Editor
     input = $stdin.getc
     case input
     when "\C-q" then exit(0)
-    when "\C-n" then @cursor = @cursor.down
-    when "\C-p" then @cursor = @cursor.up
-    when "\C-b" then @cursor = @cursor.left
-    when "\C-f" then @cursor = @cursor.right
+    when "\C-n" then @cursor = @cursor.down(@buffer)
+    when "\C-p" then @cursor = @cursor.up(@buffer)
+    when "\C-b" then @cursor = @cursor.left(@buffer)
+    when "\C-f" then @cursor = @cursor.right(@buffer)
     end
   end
 
@@ -61,6 +65,14 @@ class Buffer
       $stdout.write(line + "\r\n")
     end
   end
+
+  def line_count
+    @lines.count
+  end
+
+  def line_length(line)
+    @lines.fetch(line).length
+  end
 end
 
 class Cursor
@@ -71,20 +83,29 @@ class Cursor
     @column = column
   end
 
-  def down()
-    Cursor.new(@row + 1, @column)
+  def down(buffer)
+    Cursor.new(@row + 1, @column).restrict(buffer)
   end
 
-  def up()
-    Cursor.new(@row - 1, @column)
+  def up(buffer)
+    Cursor.new(@row - 1, @column).restrict(buffer)
   end
 
-  def left
-    Cursor.new(@row , @column - 1)
+  def left(buffer)
+    Cursor.new(@row , @column - 1).restrict(buffer)
   end
 
-  def right
-    Cursor.new(@row , @column + 1)
+  def right(buffer)
+    Cursor.new(@row , @column + 1).restrict(buffer)
   end
+
+  def restrict(buffer)
+    row = @row.clamp(0, buffer.line_count + 1)
+    column = @column.clamp(0, buffer.line_length(row))
+    Cursor.new(row,column)
+  end
+
 end
+
+
 Editor.new.execute
