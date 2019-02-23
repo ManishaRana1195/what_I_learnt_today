@@ -20,9 +20,9 @@ class Editor
       end
     end
   rescue
-      # give some space and then print the error
-      50.times {puts}
-      raise
+    # give some space and then print the error
+    50.times {puts}
+    raise
   end
 
   def render_screen
@@ -40,6 +40,14 @@ class Editor
     when "\C-p" then @cursor = @cursor.up(@buffer)
     when "\C-b" then @cursor = @cursor.left(@buffer)
     when "\C-f" then @cursor = @cursor.right(@buffer)
+    when 127.chr then
+      if @cursor.column > 0
+        @buffer = @buffer.delete(@cursor.row, @cursor.column)
+        @cursor = @cursor.left(@buffer)
+      end
+    else
+      @buffer = @buffer.insert(input, @cursor.row, @cursor.column)
+      @cursor = @cursor.right(@buffer)
     end
   end
 
@@ -73,6 +81,18 @@ class Buffer
   def line_length(line)
     @lines.fetch(line).length
   end
+
+  def insert(char, row, column)
+    lines = @lines.map(&:dup)
+    lines.fetch(row).insert(column, char)
+    Buffer.new(lines)
+  end
+
+  def delete(row,column)
+    lines = @lines.map(&:dup)
+    lines.fetch(row).slice!(column)
+    Buffer.new(lines)
+  end
 end
 
 class Cursor
@@ -92,17 +112,17 @@ class Cursor
   end
 
   def left(buffer)
-    Cursor.new(@row , @column - 1).restrict(buffer)
+    Cursor.new(@row, @column - 1).restrict(buffer)
   end
 
   def right(buffer)
-    Cursor.new(@row , @column + 1).restrict(buffer)
+    Cursor.new(@row, @column + 1).restrict(buffer)
   end
 
   def restrict(buffer)
     row = @row.clamp(0, buffer.line_count + 1)
     column = @column.clamp(0, buffer.line_length(row))
-    Cursor.new(row,column)
+    Cursor.new(row, column)
   end
 
 end

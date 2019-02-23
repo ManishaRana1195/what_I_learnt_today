@@ -8,7 +8,7 @@ In cooked mode, the terminal interprets special characters in the input and gets
 ANSI escape sequences are used to control cursor location and color in text terminals. Most commands starting with escape or "^[" or "\e" are embedded into the text which terminal understands as commands, not character code.
 "^[" OR "\e" character is known as CSI, which introduces the upcoming control sequence. CSI is of the form "\e1;2;3", where 1,2,3 are sequences as parameters. Most useful control sequences are as follows:
 
-"\e2J" - clears the entire screen
+"\e2J" - clears the entire screen  
 "\e[10;10H" - moves the cursor to 10,10 location
 
 #### Difference between "\n" and "\r\n"
